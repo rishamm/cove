@@ -289,39 +289,65 @@ document.addEventListener('pointerover', e => { const t = e.target.closest('[dat
 rows.addEventListener('pointerover', e => { const r = e.target.closest('.row'); if (!r) return; flt.classList.add('on'); $$('img', flt).forEach(i => i.classList.toggle('on', i.dataset.id === r.dataset.id)); });
 rows.addEventListener('pointerleave', () => flt.classList.remove('on'));
 
-/* nav: invert over photos, step aside over text */
-const navItems = [$('#navLogo'), ...$$('.nav .links a')];
+/* nav: invert over photos; over text, a solid twin is shown instead (no inversion) */
+const navD = $('.nav');
+const navS = navD.cloneNode(true);
+navS.classList.add('nav-solid'); navS.setAttribute('aria-hidden', 'true');
+navS.querySelectorAll('[id]').forEach(e => { e.dataset.twin = e.id; e.removeAttribute('id'); });
+const sLogo = navS.querySelector('[data-twin="navLogo"]'); sLogo.innerHTML = '';
+navD.after(navS);
+const navWaveS = new W(sLogo, { amp: 1.6, speed: 1.4 });
+navWaveS.t = navWave.t;
+navS.querySelector('.menu-btn').onclick = () => toggleMenu();
+navS.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); navD.querySelector(`[data-go="${a.dataset.go}"]`).click(); }));
+const pick = n => [n.querySelector('.logo'), ...n.querySelectorAll('.links a'), n.querySelector('.menu-btn')];
+const navPairs = pick(navD).map((d, k) => [d, pick(navS)[k]]);
 const range = document.createRange();
 const SKIP = '.nav,.menu,.cursor,.copied,.grain,.loader,.float';
-function overText(x, y) {
+function probe(x, y) {
+  let text = false;
   for (const e of document.elementsFromPoint(x, y)) {
     if (e.closest(SKIP)) continue;
-    if (e.tagName === 'IMG' || e.tagName === 'SECTION' || e.tagName === 'MAIN' || e.tagName === 'FOOTER' || e === document.body) return false;
-    if (e.tagName === 'INPUT' || e.tagName === 'TEXTAREA') return true;
-    for (const n of e.childNodes) {
-      if (n.nodeType !== 3 || !n.textContent.trim()) continue;
-      range.selectNodeContents(n);
-      for (const r of range.getClientRects()) if (x >= r.left - 6 && x <= r.right + 6 && y >= r.top - 6 && y <= r.bottom + 6) return true;
+    if (!text) {
+      if (e.tagName === 'IMG') return { text: false };
+      if (e.tagName === 'INPUT' || e.tagName === 'TEXTAREA') text = true;
+      else for (const n of e.childNodes) {
+        if (n.nodeType !== 3 || !n.textContent.trim()) continue;
+        range.selectNodeContents(n);
+        for (const r of range.getClientRects()) if (x >= r.left - 6 && x <= r.right + 6 && y >= r.top - 6 && y <= r.bottom + 6) { text = true; break; }
+        if (text) break;
+      }
+      if (!text && (e.tagName === 'SECTION' || e.tagName === 'MAIN' || e.tagName === 'FOOTER' || e === document.body)) return { text: false };
+    }
+    if (text) {
+      const bg = getComputedStyle(e).backgroundColor.match(/[\d.]+/g);
+      if (bg && (bg.length < 4 || +bg[3] > .5)) return { text: true, dark: (+bg[0] + +bg[1] + +bg[2]) / 3 < 128 };
+      if (e === document.body || e === document.documentElement) return { text: true, dark: false };
     }
   }
-  return false;
+  return { text, dark: false };
 }
 let navQueued = false;
 function navCheck() {
   navQueued = false;
   const open = document.body.classList.contains('menu-open') || lb.classList.contains('on');
-  navItems.forEach(el => {
-    if (!el || getComputedStyle(el).display === 'none') return;
-    if (open) { el.classList.remove('nav-hide'); return; }
-    const r = el.getBoundingClientRect(), cy = r.top + r.height / 2;
-    const hit = [r.left + 1, r.left + r.width / 2, r.right - 1].some(x => overText(x, cy));
-    el.classList.toggle('nav-hide', hit);
+  $('[data-twin="menuLbl"]', navS).textContent = $('#menuLbl').textContent;
+  navPairs.forEach(([d, s]) => {
+    if (!d || getComputedStyle(d).display === 'none') return;
+    let res = { text: false };
+    if (!open) {
+      const r = d.getBoundingClientRect(), cy = r.top + r.height / 2;
+      for (const x of [r.left + 1, r.left + r.width / 2, r.right - 1]) { const p = probe(x, cy); if (p.text) { res = p; break; } }
+    }
+    d.classList.toggle('solid-off', res.text);
+    s.classList.toggle('solid-on', res.text);
+    if (res.text) s.style.color = res.dark ? '#fff' : '#000';
   });
 }
 const queueNav = () => { if (!navQueued) { navQueued = true; requestAnimationFrame(navCheck); } };
 addEventListener('scroll', queueNav, { passive: true }); addEventListener('resize', queueNav);
 if (lenis) lenis.on('scroll', queueNav);
-setInterval(queueNav, 400);
+setInterval(queueNav, 300);
 
 /* ---------- motion ---------- */
 const phs = $$('.ph');
@@ -332,7 +358,7 @@ if (HAS) gsap.set('#mark', { opacity: 0 });
 if (typeof gsap !== 'undefined') gsap.ticker.add(() => {
   const v = Math.min(9, velocity() * .12);
   markWave.o.amp = markState.intro + markState.scroll + v * .6;
-  navWave.o.amp = 1.6 + v * .5;
+  navWave.o.amp = 1.6 + v * .5; if (typeof navWaveS !== 'undefined') navWaveS.o.amp = navWave.o.amp;
   footWave.o.amp = 2 + v;
 });
 

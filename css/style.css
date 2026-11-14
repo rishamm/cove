@@ -40,8 +40,10 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
 .nav{position:fixed;inset:0 0 auto 0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:var(--pad);color:#fff;mix-blend-mode:difference;pointer-events:none}
 .nav>*{pointer-events:auto}
 .nav .logo{width:78px}
-.nav .logo,.nav .links a{transition:opacity .35s var(--ease)}
-.nav .nav-hide{opacity:0;pointer-events:none}
+.nav.nav-solid{mix-blend-mode:normal;z-index:101}
+.nav-solid .logo,.nav-solid .links a,.nav-solid .menu-btn{visibility:hidden}
+.nav-solid .solid-on{visibility:visible}
+.nav .solid-off{visibility:hidden}
 .nav .links{display:flex;gap:34px;align-items:center}
 .nav .links a{font-size:13px;font-weight:300;position:relative}
 .nav .links a::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .6s var(--ease)}
