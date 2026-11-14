@@ -176,7 +176,14 @@ $('#recognition').innerHTML = li(A.recognition);
 const F = S.footer;
 const blk = b => `<div class="blk"><h5>${esc(b.title)}</h5>${(b.lines || []).map(l => /@|^\+?\d[\d\s]+$/.test(l) ? `<a class="t" href="#contact" data-copy="${esc(l)}">${esc(l)}</a>` : `<p>${esc(l)}</p>`).join('')}</div>`;
 $('#blocks').innerHTML = (F.blocks || []).map(blk).join('');
-$('#socials').innerHTML = (F.socials || []).map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`).join('');
+const ICONS = {
+  instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor" stroke="none"/></svg>',
+  behance: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6.5h4.6a2.6 2.6 0 0 1 0 5.2H3zM3 11.7h5.2a2.9 2.9 0 0 1 0 5.8H3zM3 6.5v11"/><path d="M14.2 14.2h6.6a3.3 3.3 0 1 0-1 2.4"/><path d="M14.4 7.8h5"/></svg>'
+};
+$('#socials').innerHTML = (F.socials || []).map(s => {
+  const ic = ICONS[String(s.label).toLowerCase().trim()];
+  return `<a href="${esc(s.url)}" target="_blank" rel="noopener" aria-label="${esc(s.label)}" title="${esc(s.label)}"${ic ? '' : ' class="txt"'}>${ic || esc(s.label)}</a>`;
+}).join('');
 
 /* ---------- wave text ---------- */
 function splitChars(el) {

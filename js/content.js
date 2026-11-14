@@ -39,9 +39,7 @@ window.COVE_DEFAULT = {
       title: "Let’s make\nsomething *quiet.*",
       blocks: [
         { title: "Studio", lines: ["COVE Studio", "West Bay, Doha, Qatar"] },
-        { title: "Enquiries", lines: ["hello@cove.studio", "+974 5500 0000"] },
-        { title: "Represented", lines: ["Available worldwide", "agent@cove.studio"] },
-        { title: "Press", lines: ["press@cove.studio"] }
+        { title: "Enquiries", lines: ["hello@cove.studio", "+974 5500 0000"] }
       ],
       socials: [ { label: "Instagram", url: "https://www.instagram.com/" }, { label: "Behance", url: "https://www.behance.net/" } ],
       copyright: "© 2026 COVE Studio"
