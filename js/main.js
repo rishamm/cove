@@ -102,11 +102,11 @@ setSlots(); mqDesk.addEventListener('change', () => { setSlots(); layout(true); 
 
 // hero contact + specialties
 const C = S.contact;
-$('#heroContact').innerHTML =
+if ($('#heroContact')) $('#heroContact').innerHTML =
   `<button data-copy="${esc(C.email)}"><span class="k">Email</span>${esc(C.email)}</button>` +
   `<button data-copy="${esc(C.phone)}"><span class="k">Phone</span><b>${esc(C.phone)}</b></button>` +
   `<a href="${esc(C.instagramUrl)}" target="_blank" rel="noopener"><span class="k">Insta</span>${esc(C.instagram)}</a>`;
-$('#specialties').innerHTML = (S.hero.specialties || []).map(esc).join('<br>');
+if ($('#specialties')) $('#specialties').innerHTML = (S.hero.specialties || []).map(esc).join('<br>');
 
 // manifesto
 $('#manifesto').innerHTML = rich(S.manifesto.text);
@@ -217,7 +217,7 @@ $$('.menu li a').forEach(a => a.addEventListener('mouseenter', () => waveHover($
 // clock
 const clk = $('#clock');
 const tick = () => { try { clk.textContent = `${S.brand.city} — ` + new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: S.brand.timezone }).format(new Date()); } catch (e) { } };
-tick(); setInterval(tick, 1000);
+if (clk) { tick(); setInterval(tick, 1000); }
 
 // copy
 const toast = $('.copied'); let tt;
@@ -325,8 +325,7 @@ function heroIntro(at) {
     .fromTo($$('.ph .in'), { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.6, ease: 'expo.out', stagger: { each: .07, from: 'center' } }, 0)
     .fromTo($$('.ph img'), { scale: 1.6 }, { scale: 1.12, duration: 2.2, ease: 'expo.out', stagger: { each: .07, from: 'center' } }, 0)
     .fromTo('#mark', { opacity: 0, scale: .94 }, { opacity: 1, scale: 1, duration: 1.8, ease: 'expo.out' }, .15)
-    .to(markState, { intro: 2.2, duration: 2.6, ease: 'power2.out' }, .1)
-    .from('.hero .meta>*, .hero .top-meta>*', { y: 24, opacity: 0, duration: 1.2, ease: 'expo.out', stagger: .07 }, .6);
+    .to(markState, { intro: 2.2, duration: 2.6, ease: 'power2.out' }, .1);
   return tl;
 }
 
@@ -337,7 +336,6 @@ function scrollFX() {
     gsap.to(f, { yPercent: -60 * d - 20, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   });
   gsap.to('#mark', { yPercent: 70, scale: 1.12, opacity: .15, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true, onUpdate: s => { markState.scroll = s.progress * 9; } } });
-  gsap.to('.hero .meta, .hero .top-meta', { opacity: 0, y: -40, ease: 'none', scrollTrigger: { trigger: '.hero', start: '20% top', end: '60% top', scrub: true } });
 
   // manifesto
   const m = $('#manifesto');
