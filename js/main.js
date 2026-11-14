@@ -363,7 +363,18 @@ function swapFrame() {
   const f = phs[k], inner = $('.in', f);
   const shown = new Set(phs.map(x => +x.dataset.id));
   const pool = P.map((p, i) => i).filter(i => !shown.has(i));
-  if (!pool.length) { swapCall = gsap.delayedCall(2.4, swapFrame); return; }
+  if (!pool.length) {
+    // every photo is already on show: two frames trade places instead
+    let j; do { j = Math.floor(Math.random() * phs.length); } while (j === k);
+    const g = phs[j], gIn = $('.in', g), a = f.dataset.id, b = g.dataset.id;
+    [[f, inner, b], [g, gIn, a]].forEach(([fr, inn, nid], n) => {
+      const pp = P[+nid], img = new Image(); img.alt = pp.title; img.decoding = 'async'; img.src = pp.image_url;
+      const olds = $$('img', inn); inn.appendChild(img); fr.dataset.id = nid;
+      gsap.fromTo(img, { clipPath: n ? 'inset(0% 0% 100% 0%)' : 'inset(100% 0% 0% 0%)', scale: 1.4 }, { clipPath: 'inset(0% 0% 0% 0%)', scale: 1.12, duration: 1.4, ease: 'expo.inOut', delay: n * .12, onComplete: () => olds.forEach(o => o.remove()) });
+      olds.forEach(o => gsap.to(o, { yPercent: n ? 12 : -12, duration: 1.4, ease: 'expo.inOut', delay: n * .12 }));
+    });
+    swapCall = gsap.delayedCall(2.6, swapFrame); return;
+  }
   const id = pool[Math.floor(Math.random() * pool.length)], p = P[id];
   const im = new Image(); im.alt = p.title; im.decoding = 'async'; im.src = p.image_url;
   const old = $$('img', inner);

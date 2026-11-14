@@ -16,16 +16,16 @@ window.COVE_DEFAULT = {
     archive: {
       title: "Arch*ive*",
       filters: [
-        { key: "people", label: "People" },
-        { key: "land", label: "Land" },
-        { key: "objects", label: "Objects" },
-        { key: "abstract", label: "Abstract" }
+        { key: "editorial", label: "Editorial" },
+        { key: "studio", label: "Studio" },
+        { key: "street", label: "Street" },
+        { key: "detail", label: "Detail" }
       ]
     },
     about: {
       label: "About the studio",
       text: "COVE is a one-person photography studio making images for brands, magazines and musicians — slow, considered and made to *last.*",
-      portraitUrl: "images/05.jpg",
+      portraitUrl: "images/fashion-02.jpg",
       services: [
         { name: "Portrait", meta: "01" }, { name: "Editorial & fashion", meta: "02" }, { name: "Still life & product", meta: "03" },
         { name: "Architecture", meta: "04" }, { name: "Art direction", meta: "05" }
@@ -46,17 +46,12 @@ window.COVE_DEFAULT = {
     }
   },
   projects: [
-    { title: "Dune I",      category: "Landscape",     grp: "land",     client: "Maison Noir",   year: 2026, image_url: "images/00.jpg", width: 1000, height: 1300, sort: 1,  show_hero: false, show_index: false, show_latest: true,  show_archive: true },
-    { title: "Orb",         category: "Still life",    grp: "objects",  client: "Atelier Sable", year: 2026, image_url: "images/01.jpg", width: 1300, height: 1000, sort: 2,  show_hero: true,  show_index: true,  show_latest: true,  show_archive: true },
-    { title: "Night Drive", category: "Long exposure", grp: "land",     client: "Halo Records",  year: 2025, image_url: "images/02.jpg", width: 1300, height: 900,  sort: 3,  show_hero: true,  show_index: false, show_latest: true,  show_archive: true },
-    { title: "Horizon",     category: "Seascape",      grp: "land",     client: "Grey Journal",  year: 2025, image_url: "images/03.jpg", width: 1400, height: 900,  sort: 4,  show_hero: true,  show_index: true,  show_latest: false, show_archive: true },
-    { title: "Stairwell",   category: "Architecture",  grp: "abstract", client: "Studio Ostra",  year: 2025, image_url: "images/04.jpg", width: 1000, height: 1300, sort: 5,  show_hero: true,  show_index: true,  show_latest: false, show_archive: true },
-    { title: "The Window",  category: "Portrait",      grp: "people",   client: "Kinfolk Rooms", year: 2024, image_url: "images/05.jpg", width: 1000, height: 1350, sort: 6,  show_hero: true,  show_index: true,  show_latest: false, show_archive: true },
-    { title: "Still Water", category: "Abstract",      grp: "abstract", client: "Lumen Magazine",year: 2026, image_url: "images/06.jpg", width: 1200, height: 1200, sort: 7,  show_hero: false, show_index: false, show_latest: true,  show_archive: true },
-    { title: "Exhale",      category: "Studio",        grp: "people",   client: "North & Salt",  year: 2025, image_url: "images/07.jpg", width: 950,  height: 1350, sort: 8,  show_hero: true,  show_index: true,  show_latest: false, show_archive: true },
-    { title: "Drape",       category: "Fashion",       grp: "people",   client: "Vessel Ceramics",year: 2026, image_url: "images/08.jpg", width: 1000, height: 1300, sort: 9,  show_hero: true,  show_index: true,  show_latest: true,  show_archive: true },
-    { title: "Afternoon",   category: "Interior",      grp: "objects",  client: "Field Notes",   year: 2024, image_url: "images/09.jpg", width: 1350, height: 950,  sort: 10, show_hero: false, show_index: false, show_latest: true,  show_archive: true },
-    { title: "Bloom",       category: "Botanical",     grp: "objects",  client: "Quiet Hours",   year: 2025, image_url: "images/10.jpg", width: 1100, height: 1100, sort: 11, show_hero: true,  show_index: true,  show_latest: false, show_archive: true },
-    { title: "City Rain",   category: "Street",        grp: "abstract", client: "Monolith",      year: 2024, image_url: "images/11.jpg", width: 1300, height: 900,  sort: 12, show_hero: false, show_index: true,  show_latest: true,  show_archive: true }
+    { title: "Silk in Motion", category: "Studio",    grp: "studio",    client: "Maison Noir",   year: 2026, image_url: "images/fashion-01.jpg", width: 1800, height: 1344, sort: 1, show_hero: true, show_index: true, show_latest: true,  show_archive: true },
+    { title: "Camel",          category: "Editorial", grp: "editorial", client: "Atelier Sable", year: 2026, image_url: "images/fashion-02.jpg", width: 1344, height: 1800, sort: 2, show_hero: true, show_index: true, show_latest: true,  show_archive: true },
+    { title: "Dune Walk",      category: "Editorial", grp: "editorial", client: "Grey Journal",  year: 2025, image_url: "images/fashion-03.jpg", width: 1344, height: 1800, sort: 3, show_hero: true, show_index: true, show_latest: true,  show_archive: true },
+    { title: "Gold Cuff",      category: "Detail",    grp: "detail",    client: "Vessel Jewellery", year: 2025, image_url: "images/fashion-04.jpg", width: 1800, height: 1800, sort: 4, show_hero: true, show_index: true, show_latest: false, show_archive: true },
+    { title: "Concrete",       category: "Editorial", grp: "editorial", client: "Studio Ostra",  year: 2025, image_url: "images/fashion-05.jpg", width: 1344, height: 1800, sort: 5, show_hero: true, show_index: true, show_latest: true,  show_archive: true },
+    { title: "Rue",            category: "Street",    grp: "street",    client: "Lumen Magazine", year: 2024, image_url: "images/fashion-06.jpg", width: 1800, height: 1344, sort: 6, show_hero: true, show_index: true, show_latest: true,  show_archive: true },
+    { title: "Evening",        category: "Studio",    grp: "studio",    client: "Quiet Hours",   year: 2024, image_url: "images/fashion-07.jpg", width: 1344, height: 1800, sort: 7, show_hero: true, show_index: true, show_latest: true,  show_archive: true }
   ]
 };
