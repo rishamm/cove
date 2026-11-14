@@ -23,23 +23,10 @@ if (typeof Lenis !== 'undefined' && !RM) {
 const velocity = () => (lenis ? Math.abs(lenis.velocity || 0) : 0);
 
 /* ---------- loader (starts before content arrives) ---------- */
-const loaderLogo = new W($('#loaderLogo'), { mode: 'outline', amp: 4, speed: 2.4, fx: .04 });
-const NS = 'http://www.w3.org/2000/svg';
-const defs = document.createElementNS(NS, 'defs');
-defs.innerHTML = '<clipPath id="liq"><path id="liqPath"/></clipPath>';
-loaderLogo.svg.prepend(defs);
-loaderLogo.addGroup({ fill: '#fff', 'clip-path': 'url(#liq)' });
-const liqPath = $('#liqPath'), bgPath = $('#loaderBg');
+const loaderLogo = new W($('#loaderLogo'), { amp: 4, speed: 2.4, fx: .04 });
+const bgPath = $('#loaderBg');
 const L = { p: 0, target: 0, t: 0, q: 0, ready: false, done: false, start: performance.now() };
-const TOP = W.VB[1] - 6, BOT = W.VB[1] + W.VB[3] + 6;
 
-function liquidLevel(p, t) {
-  const y0 = BOT - p * (BOT - TOP);
-  const a = 4 * Math.sin(Math.PI * Math.min(1, p * 1.2)) + .6;
-  let d = `M100 ${y0}`;
-  for (let x = 100; x <= 500; x += 6) d += ` L${x} ${(y0 + a * Math.sin(x * .045 - t * 3.2) + a * .5 * Math.sin(x * .11 + t * 2.1)).toFixed(2)}`;
-  return d + ' L500 400 L100 400 Z';
-}
 function bgShape(q, t) {
   const s = Math.sin(Math.PI * q);
   let d = 'M0 0 L100 0';
@@ -53,11 +40,10 @@ function loaderTick() {
   if (L.done) return;
   const now = performance.now(), dt = 1 / 60;
   L.t += dt;
-  const timeP = Math.min(1, (now - L.start) / 2300);
+  const timeP = Math.min(1, (now - L.start) / 1800);
   L.target = L.ready ? timeP : Math.min(timeP, .86);
   L.p += (L.target - L.p) * .08;
   if (L.target === 1 && L.p > .97) L.p = 1;
-  liqPath.setAttribute('d', liquidLevel(L.p, L.t));
   if (L.q > 0) bgPath.setAttribute('d', bgShape(L.q, L.t));
   if (L.p === 1 && L.ready && !L.exiting) exitLoader();
   requestAnimationFrame(loaderTick);
