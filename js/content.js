@@ -10,7 +10,7 @@ window.COVE_DEFAULT = {
       specialties: ["Portrait", "Editorial", "Still life"]
     },
     contact: { email: "hello@cove.studio", phone: "+974 5500 0000", instagram: "@cove.studio", instagramUrl: "https://www.instagram.com/" },
-    manifesto: { label: "Approach", text: "We photograph the *quiet* between moments — light falling on a wall, the weight of a shadow, the shape a person leaves behind. Everything in *black* and *white*, nothing more than it needs to be." },
+    manifesto: { label: "Approach", text: "We photograph the *quiet* between moments — light falling on a wall, the weight of a shadow, the shape a person leaves behind. Nothing more than it needs to be." },
     work: { title: "Selected\n*work*", label: "2024—2026" },
     latest: { title: "The *latest*", label: "Recent commissions" },
     archive: {
@@ -24,7 +24,7 @@ window.COVE_DEFAULT = {
     },
     about: {
       label: "About the studio",
-      text: "COVE is a one-person photography studio making images for brands, magazines and musicians — slow, considered and always in *monochrome.*",
+      text: "COVE is a one-person photography studio making images for brands, magazines and musicians — slow, considered and made to *last.*",
       portraitUrl: "images/05.jpg",
       services: [
         { name: "Portrait", meta: "01" }, { name: "Editorial & fashion", meta: "02" }, { name: "Still life & product", meta: "03" },

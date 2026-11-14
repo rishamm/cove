@@ -39,7 +39,7 @@ legend{padding:0 8px;font-size:11px;letter-spacing:.2em;text-transform:uppercase
 .pcard{border:1px solid #eee;cursor:pointer;transition:.2s;background:#fff}
 .pcard:hover{border-color:#000}
 .pcard .im{aspect-ratio:4/5;background:#f2f2f2;overflow:hidden}
-.pcard img{width:100%;height:100%;object-fit:cover;filter:grayscale(1)}
+.pcard img{width:100%;height:100%;object-fit:cover}
 .pcard .meta{padding:10px 12px}
 .pcard .t{font-size:15px}
 .flags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
@@ -50,7 +50,7 @@ legend{padding:0 8px;font-size:11px;letter-spacing:.2em;text-transform:uppercase
 .drawer.on{display:block}
 .drawer .panel{position:absolute;right:0;top:0;bottom:0;width:min(520px,100%);background:#fff;overflow:auto;padding:28px}
 .drawer .preview{aspect-ratio:4/3;background:#f2f2f2;margin-bottom:14px;display:grid;place-items:center;overflow:hidden}
-.drawer .preview img{max-width:100%;max-height:100%;filter:grayscale(1)}
+.drawer .preview img{max-width:100%;max-height:100%}
 .checks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 22px}
 .checks label{display:flex;gap:8px;align-items:center;font-size:13px}
 .toast{position:fixed;left:50%;top:20px;transform:translateX(-50%);background:#000;color:#fff;padding:10px 18px;border-radius:30px;font-size:12px;opacity:0;transition:.3s;z-index:30;pointer-events:none}
@@ -109,7 +109,7 @@ legend{padding:0 8px;font-size:11px;letter-spacing:.2em;text-transform:uppercase
   <div class="panel">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px"><span class="label" id="dTitle">Edit photo</span><button class="btn ghost" id="dClose">Close</button></div>
     <div class="preview"><img id="dImg" alt=""></div>
-    <div class="field"><span class="label">Image</span><div class="up"><input type="file" id="dFile" accept="image/*"></div><span class="hint">Resized to 2400px on the long side before upload. Shown in black and white on the site.</span></div>
+    <div class="field"><span class="label">Image</span><div class="up"><input type="file" id="dFile" accept="image/*"></div><span class="hint">Resized to 2400px on the long side before upload.</span></div>
     <div class="field"><span class="label">Title</span><input type="text" id="dT"></div>
     <div class="row2">
       <div class="field"><span class="label">Category</span><input type="text" id="dC" placeholder="Portrait"></div>
