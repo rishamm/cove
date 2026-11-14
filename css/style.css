@@ -146,13 +146,6 @@ section{position:relative}
  .progress{display:none}
 }
 
-/* marquee — travelling wave through the letters */
-.marquee{padding:clamp(60px,9vw,130px) 0;overflow:hidden;border-bottom:1px solid var(--line);white-space:nowrap}
-.mq-track{display:inline-flex;will-change:transform}
-.mq-item{font-size:clamp(70px,13vw,220px);font-weight:100;letter-spacing:-.05em;line-height:1.1;padding-right:.35em;display:inline-flex;align-items:center;gap:.35em}
-.mq-item::after{content:"";display:inline-block;width:.16em;height:.16em;border:1px solid currentColor;border-radius:50%}
-.mq-item .ch{will-change:transform}
-
 /* archive */
 .archive{padding:clamp(100px,14vw,200px) 0}
 .filters{display:flex;gap:6px;flex-wrap:wrap}

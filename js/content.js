@@ -13,7 +13,6 @@ window.COVE_DEFAULT = {
     manifesto: { label: "Approach", text: "We photograph the *quiet* between moments — light falling on a wall, the weight of a shadow, the shape a person leaves behind. Everything in *black* and *white*, nothing more than it needs to be." },
     work: { title: "Selected\n*work*", label: "2024—2026" },
     latest: { title: "The *latest*", label: "Recent commissions" },
-    marquee: ["Portrait", "*Editorial*", "Still life", "*Light*", "Architecture", "*Form*"],
     archive: {
       title: "Arch*ive*",
       filters: [

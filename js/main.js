@@ -131,10 +131,6 @@ P.filter(p => p.show_latest).forEach(p => {
   track.appendChild(c);
 });
 
-// marquee
-const mq = $('#mq');
-const mqHTML = (S.marquee || []).map(w => `<span class="mq-item">${rich(w)}</span>`).join('');
-mq.innerHTML = mqHTML + mqHTML;
 
 // archive
 const archiveP = P.filter(p => p.show_archive);
@@ -386,33 +382,6 @@ function scrollFX() {
   gsap.fromTo('#footLogo', { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, ease: 'none', scrollTrigger: { trigger: '#footLogo', start: 'top bottom', end: 'bottom bottom', scrub: true } });
 }
 
-// marquee: slides + a travelling wave rolls through every letter
-const mqChars = [];
-$$('.mq-item', mq).forEach(it => splitChars(it).forEach(c => mqChars.push(c)));
-let mqX = 0, mqVis = true, mqOff = [];
-const measure = () => { mqOff = mqChars.map(c => c.offsetLeft); };
-if ('IntersectionObserver' in window) new IntersectionObserver(e => mqVis = e[0].isIntersecting).observe($('.marquee'));
-if (!RM) {
-  let t = 0, dir = 1;
-  if (lenis) lenis.on('scroll', e => { if (e.direction) dir = e.direction; });
-  const step = () => {
-    if (mqVis) {
-      if (!mqOff.length) measure();
-      t += 1 / 60;
-      mqX -= (1 + Math.min(8, velocity() * .08)) * dir;
-      const half = mq.scrollWidth / 2; if (mqX <= -half) mqX += half; if (mqX > 0) mqX -= half;
-      mq.style.transform = `translate3d(${mqX}px,0,0)`;
-      const amp = 0.09 + Math.min(.12, velocity() * .002);
-      for (let i = 0; i < mqChars.length; i++) {
-        const x = mqOff[i] + mqX;
-        mqChars[i].style.transform = `translate3d(0,${(Math.sin(x * .006 - t * 2.4) * amp).toFixed(3)}em,0)`;
-      }
-    }
-    requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-  addEventListener('resize', () => { mqOff = []; });
-}
 
 /* ---------- loader exit ---------- */
 function exitLoader() {
