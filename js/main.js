@@ -185,6 +185,22 @@ $('#socials').innerHTML = (F.socials || []).map(s => {
   return `<a href="${esc(s.url)}" target="_blank" rel="noopener" aria-label="${esc(s.label)}" title="${esc(s.label)}"${ic ? '' : ' class="txt"'}>${ic || esc(s.label)}</a>`;
 }).join('');
 
+/* ---------- the word COVE is always set in the logo's own letterforms ---------- */
+const coveSVG = () => `<svg class="cove-word" viewBox="${W.VB.join(' ')}" role="img" aria-label="COVE"><g fill="currentColor">${W.static.map(d => `<path d="${d}"/>`).join('')}</g></svg>`;
+function coveify(root) {
+  const re = /\bCOVE\b/;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: n => re.test(n.nodeValue) && !n.parentNode.closest('script,style,svg,textarea,input,title,.cove-word') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
+  });
+  const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(n => {
+    const span = document.createElement('span');
+    span.innerHTML = esc(n.nodeValue).replace(/\bCOVE\b/g, coveSVG());
+    n.replaceWith(...span.childNodes);
+  });
+}
+coveify(document.body);
+
 /* ---------- wave text ---------- */
 function splitChars(el) {
   const walk = node => {

@@ -11,6 +11,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .label{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:300}
 .serif,em{font-family:var(--serif);font-style:italic;font-weight:300}
 .logo svg{display:block;width:100%;height:auto}
+.cove-word{display:inline-block;height:.74em;width:auto;vertical-align:-.04em;overflow:visible;margin:0 .04em}
 .wd{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.06em;margin-bottom:-.06em}
 .ch{display:inline-block;will-change:transform}
 
