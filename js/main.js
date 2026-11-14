@@ -61,7 +61,6 @@ $$('[data-rich]').forEach(el => el.innerHTML = rich(get(S, el.dataset.rich)));
 
 // logos
 const navWave = new W($('#navLogo'), { amp: 1.6, speed: 1.4 });
-const footWave = new W($('#footLogo'), { amp: 2, speed: 1.2, fx: .028 });
 
 // hero collage
 const SLOTS_D = [[5,15,12.5,'3/4',.6],[16,52,16,'4/3',1.2],[33,9,10,'3/4',.35],[61,11,18,'3/2',.9],[85,28,10.5,'2/3',1.5],[70,57,11,'1/1',.7],[43,63,13,'3/2',1.1],[-2,58,9,'3/4',.5]];
@@ -351,7 +350,6 @@ const phs = $$('.ph');
 if (typeof gsap !== 'undefined') gsap.ticker.add(() => {
   const v = Math.min(9, velocity() * .12);
   navWave.o.amp = 1.6 + v * .5; if (typeof navWaveS !== 'undefined') navWaveS.o.amp = navWave.o.amp;
-  footWave.o.amp = 2 + v;
 });
 
 // hero mouse parallax
@@ -424,7 +422,6 @@ function scrollFX() {
 
   // contact
   gsap.from('.cgrid>*, .contact-sec .pills', { opacity: 0, y: 50, duration: 1.4, stagger: .1, ease: 'expo.out', scrollTrigger: { trigger: '.cgrid', start: 'top 86%' } });
-  gsap.fromTo('#footLogo', { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, ease: 'none', scrollTrigger: { trigger: '#footLogo', start: 'top bottom', end: 'bottom bottom', scrub: true } });
 }
 
 
