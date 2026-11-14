@@ -62,22 +62,27 @@ $$('[data-rich]').forEach(el => el.innerHTML = rich(get(S, el.dataset.rich)));
 // logos
 const navWave = new W($('#navLogo'), { amp: 1.6, speed: 1.4 });
 
-// hero — slideshow frame + thumbnail strip
+// hero — living collage
+const SLOTS_D = [[8,14,13,'3/4',.6],[27,6,9,'1/1',1.2],[43,20,15,'4/5',.35],[65,8,11,'3/4',.9],[82,30,12,'4/3',1.4],[69,60,14,'3/2',.7],[35,66,12,'4/3',1.1],[11,57,10,'4/5',.5]];
+const SLOTS_M = [[5,12,30],[62,9,26],[29,29,42],[73,43,23],[4,50,28],[46,63,34],[9,79,22],[70,77,25]];
 const heroAll = P.filter(p => p.show_hero);
 const heroP = (heroAll.length ? heroAll : P).slice(0, 8);
-const stage = $('#stage'), thumbsEl = $('#thumbs'), trailEl = $('#trail');
-stage.dataset.cursor = 'View';
+const collage = $('#collage');
 heroP.forEach((p, i) => {
-  const s = document.createElement('div');
-  s.className = 'slide'; s.dataset.id = P.indexOf(p); s.style.zIndex = 0;
-  s.innerHTML = `<img src="${esc(p.image_url)}" alt="${esc(p.title)}" decoding="async">`;
-  stage.appendChild(s);
-  const b = document.createElement('button');
-  b.className = 'th'; b.setAttribute('aria-label', `Show ${p.title}`);
-  b.innerHTML = `<img src="${esc(p.image_url)}" alt="" loading="lazy"><i></i>`;
-  thumbsEl.appendChild(b);
+  const s = SLOTS_D[i];
+  const f = document.createElement('figure');
+  f.className = 'ph'; f.dataset.d = s[4]; f.dataset.id = P.indexOf(p); f.dataset.cursor = 'View';
+  f.style.aspectRatio = s[3];
+  f.innerHTML = `<div class="in"><img src="${esc(p.image_url)}" alt="${esc(p.title)}" decoding="async"></div><figcaption>${pad2(i + 1)}</figcaption>`;
+  collage.appendChild(f);
 });
-mqDesk.addEventListener('change', () => layout(true));
+function setSlots() {
+  $$('.ph').forEach((f, i) => {
+    const s = mqDesk.matches ? SLOTS_D[i] : SLOTS_M[i];
+    f.style.setProperty('--x', s[0] + '%'); f.style.setProperty('--y', s[1] + '%'); f.style.setProperty('--w', s[2] + 'vw');
+  });
+}
+setSlots(); mqDesk.addEventListener('change', () => { setSlots(); layout(true); });
 
 // hero contact + specialties
 const C = S.contact;
@@ -243,9 +248,8 @@ let sx = 0;
 lb.addEventListener('touchstart', e => sx = e.touches[0].clientX, { passive: true });
 lb.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) show(cur + (dx < 0 ? 1 : -1)); });
 document.addEventListener('click', e => {
-  const t = e.target.closest('.tile,.card,.row,.stage'); if (!t) return;
+  const t = e.target.closest('.tile,.card,.row,.ph'); if (!t) return;
   if (t.classList.contains('tile')) openLB(t.dataset.id, tiles.filter(x => !x.classList.contains('hide')).map(x => +x.dataset.id));
-  else if (t.classList.contains('stage')) openLB(heroCurrentId(), heroP.map(p => P.indexOf(p)));
   else openLB(t.dataset.id);
 });
 
@@ -349,73 +353,64 @@ if (typeof gsap !== 'undefined') gsap.ticker.add(() => {
   navWave.o.amp = 1.6 + v * .5; if (typeof navWaveS !== 'undefined') navWaveS.o.amp = navWave.o.amp;
 });
 
-// hero slideshow engine
-const slides = $$('.slide', stage), ths = $$('.th', thumbsEl);
-const SLIDE_T = 3.8;
-let heroIdx = -1, heroCall = null, heroVisible = true, heroStarted = false, barTween = null;
-function heroCurrentId() { return slides[Math.max(0, heroIdx)].dataset.id; }
-function goSlide(i) {
-  if (!slides.length) return;
-  i = (i + slides.length) % slides.length;
-  if (i === heroIdx) return;
-  const prev = slides[heroIdx], next = slides[i];
-  heroIdx = i;
-  ths.forEach((b, k) => b.classList.toggle('on', k === i));
-  if (!HAS) { slides.forEach(s => s.style.zIndex = s === next ? 2 : 0); return; }
-  slides.forEach(s => { if (s !== next && s !== prev) s.style.zIndex = 0; });
-  if (prev) prev.style.zIndex = 1;
-  next.style.zIndex = 2;
-  const img = $('img', next);
-  gsap.killTweensOf([next, img]);
-  gsap.fromTo(next, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut' });
-  gsap.fromTo(img, { scale: 1.35, yPercent: 6 }, { scale: 1.06, yPercent: 0, duration: 1.8, ease: 'expo.out', onComplete: () => gsap.to(img, { scale: 1, duration: SLIDE_T, ease: 'none' }) });
-  if (prev) gsap.to($('img', prev), { yPercent: -10, scale: 1.1, duration: 1.3, ease: 'expo.inOut' });
-  ths.forEach(b => gsap.set($('i', b), { scaleX: 0 }));
-  if (barTween) barTween.kill();
-  barTween = gsap.fromTo($('i', ths[i]), { scaleX: 0 }, { scaleX: 1, duration: SLIDE_T, ease: 'none', paused: !heroVisible });
-  if (heroCall) heroCall.kill();
-  heroCall = gsap.delayedCall(SLIDE_T, () => goSlide(heroIdx + 1));
-  if (!heroVisible) heroCall.pause();
+// hero: the collage stays alive — frames swap photographs one at a time
+const phs = $$('.ph');
+let heroVisible = true, swapCall = null, lastSwap = -1;
+function swapFrame() {
+  if (!phs.length || !heroVisible) { swapCall = gsap.delayedCall(1, swapFrame); return; }
+  let k; do { k = Math.floor(Math.random() * phs.length); } while (k === lastSwap && phs.length > 1);
+  lastSwap = k;
+  const f = phs[k], inner = $('.in', f);
+  const shown = new Set(phs.map(x => +x.dataset.id));
+  const pool = P.map((p, i) => i).filter(i => !shown.has(i));
+  if (!pool.length) { swapCall = gsap.delayedCall(2.4, swapFrame); return; }
+  const id = pool[Math.floor(Math.random() * pool.length)], p = P[id];
+  const im = new Image(); im.alt = p.title; im.decoding = 'async'; im.src = p.image_url;
+  const old = $$('img', inner);
+  const go = () => {
+    inner.appendChild(im); f.dataset.id = id;
+    gsap.fromTo(im, { clipPath: 'inset(100% 0% 0% 0%)', scale: 1.4 }, { clipPath: 'inset(0% 0% 0% 0%)', scale: 1.12, duration: 1.4, ease: 'expo.inOut', onComplete: () => old.forEach(o => o.remove()) });
+    old.forEach(o => gsap.to(o, { yPercent: -12, duration: 1.4, ease: 'expo.inOut' }));
+    swapCall = gsap.delayedCall(2.2, swapFrame);
+  };
+  (im.decode ? im.decode() : Promise.resolve()).then(go, go);
 }
-ths.forEach((b, k) => b.addEventListener('click', e => { e.stopPropagation(); goSlide(k); }));
-if ('IntersectionObserver' in window) new IntersectionObserver(e => {
-  heroVisible = e[0].isIntersecting;
-  if (heroCall) heroVisible ? heroCall.resume() : heroCall.pause();
-  if (barTween) heroVisible ? barTween.resume() : barTween.pause();
-}).observe($('.hero'));
-if (!HAS) { goSlide(0); setInterval(() => goSlide(heroIdx + 1), SLIDE_T * 1000); }
+if ('IntersectionObserver' in window) new IntersectionObserver(e => { heroVisible = e[0].isIntersecting; }).observe($('.hero'));
 
-// cursor trail of photographs (desktop)
+// mouse: depth parallax per frame + a gentle 3D tilt of the whole collage
 if (HAS && mqDesk.matches && !RM) {
-  const pool = [...Array(14)].map(() => { const im = document.createElement('img'); im.alt = ''; im.decoding = 'async'; trailEl.appendChild(im); return im; });
-  let pi = 0, si = 0, lx = -999, ly = -999;
+  gsap.set(collage, { transformPerspective: 1400 });
+  const rx = gsap.quickTo(collage, 'rotationX', { duration: 1.6, ease: 'power3' }), ry = gsap.quickTo(collage, 'rotationY', { duration: 1.6, ease: 'power3' });
+  const qs = phs.map(f => { const el = $('.in', f); return [gsap.quickTo(el, 'x', { duration: 1.4, ease: 'power3' }), gsap.quickTo(el, 'y', { duration: 1.4, ease: 'power3' }), +f.dataset.d]; });
   $('.hero').addEventListener('pointermove', e => {
-    if (stage.contains(e.target) || thumbsEl.contains(e.target)) return;
-    const r = trailEl.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
-    if (Math.hypot(x - lx, y - ly) < 110) return;
-    lx = x; ly = y;
-    const p = P[si++ % P.length], im = pool[pi++ % pool.length];
-    im.src = p.image_url;
-    gsap.killTweensOf(im);
-    gsap.set(im, { x, y, xPercent: -50, yPercent: -50, zIndex: pi });
-    gsap.timeline()
-      .fromTo(im, { opacity: 0, scale: .55, rotation: gsap.utils.random(-6, 6) }, { opacity: 1, scale: 1, rotation: 0, duration: .55, ease: 'expo.out' })
-      .to(im, { opacity: 0, scale: .85, y: y + 24, duration: .8, ease: 'power2.in' }, .65);
+    const nx = e.clientX / innerWidth - .5, ny = e.clientY / innerHeight - .5;
+    qs.forEach(([x, y, d]) => { x(-nx * d * 50); y(-ny * d * 50); });
+    ry(nx * 7); rx(-ny * 5);
+  });
+  $('.hero').addEventListener('pointerleave', () => { rx(0); ry(0); qs.forEach(([x, y]) => { x(0); y(0); }); });
+  phs.forEach(f => {
+    f.addEventListener('pointerenter', () => gsap.to(f, { scale: 1.04, duration: .8, ease: 'expo.out' }));
+    f.addEventListener('pointerleave', () => gsap.to(f, { scale: 1, duration: .8, ease: 'expo.out' }));
   });
 }
 
 function heroIntro(at) {
   const tl = gsap.timeline({ delay: at });
-  tl.fromTo(stage, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.6, ease: 'expo.inOut' }, 0)
-    .add(() => { heroStarted = true; goSlide(0); }, .05)
-    .fromTo(ths, { y: 24, opacity: 0 }, { y: 0, opacity: (k, el) => el.classList.contains('on') ? 1 : .32, duration: 1.2, ease: 'expo.out', stagger: .05, clearProps: 'opacity,transform' }, .9);
+  tl.fromTo(phs, { xPercent: (k, el) => (50 - parseFloat(el.style.getPropertyValue('--x'))) * 4, yPercent: (k, el) => (45 - parseFloat(el.style.getPropertyValue('--y'))) * 4, scale: .5, rotation: () => gsap.utils.random(-10, 10), opacity: 0 },
+      { xPercent: 0, yPercent: 0, scale: 1, rotation: 0, opacity: 1, duration: 2, ease: 'expo.out', stagger: { each: .06, from: 'random' } }, 0)
+    .fromTo($$('.ph .in'), { clipPath: 'inset(50% 50% 50% 50%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.6, ease: 'expo.inOut', stagger: { each: .06, from: 'random' } }, 0)
+    .fromTo($$('.ph img'), { scale: 1.7 }, { scale: 1.12, duration: 2.2, ease: 'expo.out' }, 0)
+    .fromTo($$('.ph figcaption'), { opacity: 0 }, { opacity: 1, duration: 1, stagger: .05 }, 1.2)
+    .add(() => { swapCall = gsap.delayedCall(1.2, swapFrame); }, 1.8);
   return tl;
 }
 
 function scrollFX() {
-  // hero — frame grows and lifts as you scroll away, strip fades
-  gsap.to(stage, { scale: 1.16, yPercent: -12, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-  gsap.to(thumbsEl, { opacity: 0, y: -30, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: '35% top', scrub: true } });
+  // hero — frames separate in depth as you scroll away
+  phs.forEach(f => {
+    const d = +f.dataset.d;
+    gsap.to(f, { yPercent: -40 - 70 * d, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  });
 
   // manifesto
   const m = $('#manifesto');
@@ -480,7 +475,7 @@ function exitLoader() {
 }
 
 // wait for hero images (max 4s), then let the loader finish
-const heroImgs = $$('.slide img').slice(0, 2);
+const heroImgs = $$('.ph img');
 await Promise.race([
   Promise.all(heroImgs.map(i => i.decode ? i.decode().catch(() => { }) : Promise.resolve())),
   new Promise(r => setTimeout(r, 4000))
