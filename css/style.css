@@ -72,8 +72,6 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
 .ph .in{overflow:hidden;width:100%;height:100%;will-change:transform}
 .ph .in img{transform:scale(1.12)}
 .ph figcaption{position:absolute;right:0;bottom:-16px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--g)}
-.hero .mark{position:absolute;left:50%;top:50%;width:min(60vw,820px);margin-left:calc(min(60vw,820px) / -2);translate:0 -50%;color:#fff;mix-blend-mode:difference;z-index:3;pointer-events:none}
-.hero .mark svg{width:100%;height:auto;display:block}
 .hero .meta{position:absolute;left:var(--pad);right:var(--pad);bottom:var(--pad);display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:30px;align-items:end;z-index:4;color:#fff;mix-blend-mode:difference}
 .hero .meta p{max-width:34ch;font-size:14px;line-height:1.55}
 .hero .contact a,.hero .contact button{display:flex;gap:14px;font-size:13px;padding:2px 0;text-align:left}
@@ -89,7 +87,6 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
  .hero .meta{grid-template-columns:1fr 1fr;row-gap:22px}
  .hero .meta .scroll-ind{display:none}
  .hero .meta p{grid-column:1/-1;font-size:13px}
- .hero .mark{width:84vw;margin-left:-42vw}
  .hero .top-meta{top:calc(var(--pad) + 40px)}
  .ph figcaption{display:none}
 }

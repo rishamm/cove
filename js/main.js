@@ -75,7 +75,6 @@ $$('[data-rich]').forEach(el => el.innerHTML = rich(get(S, el.dataset.rich)));
 
 // logos
 const navWave = new W($('#navLogo'), { amp: 1.6, speed: 1.4 });
-const markWave = new W($('#mark'), { amp: 14, speed: 1.3, fx: .03 });
 const footWave = new W($('#footLogo'), { amp: 2, speed: 1.2, fx: .028 });
 
 // hero collage
@@ -361,13 +360,10 @@ setInterval(queueNav, 300);
 
 /* ---------- motion ---------- */
 const phs = $$('.ph');
-const markState = { intro: 14, scroll: 0 };
-if (HAS) gsap.set('#mark', { opacity: 0 });
 
 // logos breathe with scroll velocity — liquid response
 if (typeof gsap !== 'undefined') gsap.ticker.add(() => {
   const v = Math.min(9, velocity() * .12);
-  markWave.o.amp = markState.intro + markState.scroll + v * .6;
   navWave.o.amp = 1.6 + v * .5; if (typeof navWaveS !== 'undefined') navWaveS.o.amp = navWave.o.amp;
   footWave.o.amp = 2 + v;
 });
@@ -375,11 +371,9 @@ if (typeof gsap !== 'undefined') gsap.ticker.add(() => {
 // hero mouse parallax
 if (HAS && mqDesk.matches) {
   const qs = phs.map(f => { const el = $('.in', f); return [gsap.quickTo(el, 'x', { duration: 1.4, ease: 'power3' }), gsap.quickTo(el, 'y', { duration: 1.4, ease: 'power3' }), +f.dataset.d]; });
-  const mq2 = [gsap.quickTo('#mark', 'x', { duration: 1.8, ease: 'power3' })];
   $('.hero').addEventListener('pointermove', e => {
     const nx = e.clientX / innerWidth - .5, ny = e.clientY / innerHeight - .5;
     qs.forEach(([x, y, d]) => { x(-nx * d * 46); y(-ny * d * 46); });
-    mq2[0](nx * 14);
   });
 }
 
@@ -388,19 +382,16 @@ function heroIntro(at) {
   tl.fromTo(phs, { y: () => innerHeight * .55, rotation: () => gsap.utils.random(-9, 9), opacity: 0 },
       { y: 0, rotation: 0, opacity: 1, duration: 2, ease: 'expo.out', stagger: { each: .07, from: 'center' } }, 0)
     .fromTo($$('.ph .in'), { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.6, ease: 'expo.out', stagger: { each: .07, from: 'center' } }, 0)
-    .fromTo($$('.ph img'), { scale: 1.6 }, { scale: 1.12, duration: 2.2, ease: 'expo.out', stagger: { each: .07, from: 'center' } }, 0)
-    .fromTo('#mark', { opacity: 0, scale: .94 }, { opacity: 1, scale: 1, duration: 1.8, ease: 'expo.out' }, .15)
-    .to(markState, { intro: 2.2, duration: 2.6, ease: 'power2.out' }, .1);
+    .fromTo($$('.ph img'), { scale: 1.6 }, { scale: 1.12, duration: 2.2, ease: 'expo.out', stagger: { each: .07, from: 'center' } }, 0);
   return tl;
 }
 
 function scrollFX() {
-  // hero — no pin: layered drift + liquid melt of the mark
+  // hero — no pin: layered drift
   phs.forEach(f => {
     const d = +f.dataset.d;
     gsap.to(f, { yPercent: -60 * d - 20, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   });
-  gsap.to('#mark', { yPercent: 70, scale: 1.12, opacity: .15, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true, onUpdate: s => { markState.scroll = s.progress * 9; } } });
 
   // manifesto
   const m = $('#manifesto');
