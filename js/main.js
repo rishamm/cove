@@ -259,6 +259,7 @@ function toggleMenu(force) {
   if (lenis) on ? lenis.stop() : lenis.start();
 }
 $('#menuBtn').onclick = () => toggleMenu();
+mqDesk.addEventListener('change', () => { if (mqDesk.matches) toggleMenu(false); });
 $$('[data-go]').forEach(a => a.addEventListener('click', e => {
   e.preventDefault(); const tgt = $(a.dataset.go); if (!tgt) return;
   const was = document.body.classList.contains('menu-open'); if (was) toggleMenu(false);
