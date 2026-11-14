@@ -35,7 +35,7 @@ Only emails in the `admins` table can write; everyone can read. The anon key is 
 
 ## Editing content
 
-- **Content tab**: every text on the site — hero, contact details, manifesto, section titles, about, services, recognition, stats, footer blocks, social links. Wrap words in `*asterisks*` to set them in the italic serif; use a new line for a line break.
+- **Content tab**: every text on the site — hero, contact details, manifesto, section titles, about, services, recognition, footer blocks, social links. Wrap words in `*asterisks*` to set them in the italic serif; use a new line for a line break.
 - **Photos tab**: upload photos (resized to 2400px, stored in the `photos` bucket), set title, category, client, year and archive filter, choose where each appears (hero collage — first 8, Selected work, The latest, Archive) and reorder with ↑ ↓.
 
 Changes are live as soon as you save — no rebuild.

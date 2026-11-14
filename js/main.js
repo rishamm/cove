@@ -172,7 +172,6 @@ $('#aboutImg').src = A.portraitUrl || (P[0] && P[0].image_url) || '';
 const li = arr => (arr || []).map(x => `<li><span class="nm">${rich(x.name)}</span><span>${esc(x.meta)}</span></li>`).join('');
 $('#services').innerHTML = li(A.services);
 $('#recognition').innerHTML = li(A.recognition);
-$('#stats').innerHTML = (A.stats || []).map(s => `<div><b data-n="${+s.value || 0}" data-s="${esc(s.suffix)}">${+s.value || 0}${esc(s.suffix)}</b><span class="label">${esc(s.label)}</span></div>`).join('');
 
 // footer
 const F = S.footer;
@@ -290,6 +289,40 @@ document.addEventListener('pointerover', e => { const t = e.target.closest('[dat
 rows.addEventListener('pointerover', e => { const r = e.target.closest('.row'); if (!r) return; flt.classList.add('on'); $$('img', flt).forEach(i => i.classList.toggle('on', i.dataset.id === r.dataset.id)); });
 rows.addEventListener('pointerleave', () => flt.classList.remove('on'));
 
+/* nav: invert over photos, step aside over text */
+const navItems = [$('#navLogo'), ...$$('.nav .links a')];
+const range = document.createRange();
+const SKIP = '.nav,.menu,.cursor,.copied,.grain,.loader,.float';
+function overText(x, y) {
+  for (const e of document.elementsFromPoint(x, y)) {
+    if (e.closest(SKIP)) continue;
+    if (e.tagName === 'IMG' || e.tagName === 'SECTION' || e.tagName === 'MAIN' || e.tagName === 'FOOTER' || e === document.body) return false;
+    if (e.tagName === 'INPUT' || e.tagName === 'TEXTAREA') return true;
+    for (const n of e.childNodes) {
+      if (n.nodeType !== 3 || !n.textContent.trim()) continue;
+      range.selectNodeContents(n);
+      for (const r of range.getClientRects()) if (x >= r.left - 6 && x <= r.right + 6 && y >= r.top - 6 && y <= r.bottom + 6) return true;
+    }
+  }
+  return false;
+}
+let navQueued = false;
+function navCheck() {
+  navQueued = false;
+  const open = document.body.classList.contains('menu-open') || lb.classList.contains('on');
+  navItems.forEach(el => {
+    if (!el || getComputedStyle(el).display === 'none') return;
+    if (open) { el.classList.remove('nav-hide'); return; }
+    const r = el.getBoundingClientRect(), cy = r.top + r.height / 2;
+    const hit = [r.left + 1, r.left + r.width / 2, r.right - 1].some(x => overText(x, cy));
+    el.classList.toggle('nav-hide', hit);
+  });
+}
+const queueNav = () => { if (!navQueued) { navQueued = true; requestAnimationFrame(navCheck); } };
+addEventListener('scroll', queueNav, { passive: true }); addEventListener('resize', queueNav);
+if (lenis) lenis.on('scroll', queueNav);
+setInterval(queueNav, 400);
+
 /* ---------- motion ---------- */
 const phs = $$('.ph');
 const markState = { intro: 14, scroll: 0 };
@@ -375,7 +408,6 @@ function scrollFX() {
   gsap.fromTo('#aboutImg', { scale: 1.35 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '.about', start: 'top bottom', end: 'bottom top', scrub: true } });
   gsap.from('.about h2', { opacity: 0, y: 50, duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: '.about h2', start: 'top 86%' } });
   gsap.from('.about li', { opacity: 0, x: -24, duration: 1.1, stagger: .04, ease: 'expo.out', scrollTrigger: { trigger: '.about .cols', start: 'top 86%' } });
-  $$('#stats b').forEach(b => { const o = { v: 0 }; gsap.to(o, { v: +b.dataset.n, duration: 2.2, ease: 'power3.out', onUpdate: () => b.textContent = Math.round(o.v) + b.dataset.s, scrollTrigger: { trigger: b, start: 'top 92%' } }); });
 
   // contact
   gsap.from('.cgrid>*', { opacity: 0, y: 50, duration: 1.4, stagger: .1, ease: 'expo.out', scrollTrigger: { trigger: '.cgrid', start: 'top 86%' } });

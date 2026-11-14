@@ -33,9 +33,6 @@ window.COVE_DEFAULT = {
       recognition: [
         { name: "Monochrome Awards", meta: "2025" }, { name: "Solo show — Gallery 7", meta: "2025" },
         { name: "Book: *Low Light*", meta: "2024" }, { name: "Young Talent shortlist", meta: "2023" }
-      ],
-      stats: [
-        { value: 140, suffix: "+", label: "Commissions" }, { value: 12, suffix: "", label: "Countries" }, { value: 7, suffix: "", label: "Years" }
       ]
     },
     footer: {
