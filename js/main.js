@@ -175,9 +175,7 @@ $('#recognition').innerHTML = li(A.recognition);
 // footer
 const F = S.footer;
 const blk = b => `<div class="blk"><h5>${esc(b.title)}</h5>${(b.lines || []).map(l => /@|^\+?\d[\d\s]+$/.test(l) ? `<a class="t" href="#contact" data-copy="${esc(l)}">${esc(l)}</a>` : `<p>${esc(l)}</p>`).join('')}</div>`;
-const half = Math.ceil((F.blocks || []).length / 2);
-$('#blocksA').innerHTML = (F.blocks || []).slice(0, half).map(blk).join('');
-$('#blocksB').innerHTML = (F.blocks || []).slice(half).map(blk).join('');
+$('#blocks').innerHTML = (F.blocks || []).map(blk).join('');
 $('#socials').innerHTML = (F.socials || []).map(s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a>`).join('');
 
 /* ---------- wave text ---------- */
@@ -220,16 +218,6 @@ document.addEventListener('click', e => {
   const b = e.target.closest('[data-copy]'); if (!b) return;
   e.preventDefault(); const v = b.dataset.copy;
   try { navigator.clipboard.writeText(v).then(() => flash('Copied — ' + v), () => flash(v)); } catch (err) { flash(v); }
-});
-
-// form → email app
-$('#form').addEventListener('submit', e => {
-  e.preventDefault();
-  const to = F.formEmail || C.email, n = $('#fn').value;
-  const a = document.createElement('a');
-  a.href = `mailto:${to}?subject=${encodeURIComponent('Project enquiry — ' + n)}&body=${encodeURIComponent($('#fm').value + '\n\n' + n + ' · ' + $('#fe').value)}`;
-  a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
-  $('#formnote').textContent = `Your email app should open with this message. If it doesn’t, write to ${to}.`;
 });
 
 // lightbox
@@ -435,7 +423,7 @@ function scrollFX() {
   gsap.from('.about li', { opacity: 0, x: -24, duration: 1.1, stagger: .04, ease: 'expo.out', scrollTrigger: { trigger: '.about .cols', start: 'top 86%' } });
 
   // contact
-  gsap.from('.cgrid>*', { opacity: 0, y: 50, duration: 1.4, stagger: .1, ease: 'expo.out', scrollTrigger: { trigger: '.cgrid', start: 'top 86%' } });
+  gsap.from('.cgrid>*, .contact-sec .pills', { opacity: 0, y: 50, duration: 1.4, stagger: .1, ease: 'expo.out', scrollTrigger: { trigger: '.cgrid', start: 'top 86%' } });
   gsap.fromTo('#footLogo', { yPercent: 40, opacity: 0 }, { yPercent: 0, opacity: 1, ease: 'none', scrollTrigger: { trigger: '#footLogo', start: 'top bottom', end: 'bottom bottom', scrub: true } });
 }
 

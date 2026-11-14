@@ -44,8 +44,6 @@ window.COVE_DEFAULT = {
         { title: "Press", lines: ["press@cove.studio"] }
       ],
       socials: [ { label: "Instagram", url: "https://www.instagram.com/" }, { label: "Behance", url: "https://www.behance.net/" } ],
-      formTitle: "Send a message",
-      formEmail: "hello@cove.studio",
       copyright: "© 2026 COVE Studio"
     }
   },
