@@ -3,7 +3,7 @@
    In text fields, wrap words in *asterisks* to set them in the italic serif. Use \n for a line break. */
 window.COVE_DEFAULT = {
   settings: {
-    brand: { name: "COVE", city: "Doha", timezone: "Asia/Qatar", established: "2019", loaderCaption: "Visual studio — Doha" },
+    brand: { name: "COVE", city: "Doha", timezone: "Asia/Qatar", established: "2019" },
     hero: {
       eyebrow: "Photography & direction",
       tagline: "Photographer and visual director working between commissioned work and quiet, personal studies of light, form and the people inside them.",

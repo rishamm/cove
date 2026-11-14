@@ -25,9 +25,6 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
 .loader .bg path{fill:#000}
 .loader .lw{position:absolute;left:50%;top:50%;width:min(62vw,520px);translate:-50% -50%}
 .loader .lw svg{width:100%;height:auto;display:block;overflow:visible}
-.loader .count{position:absolute;right:var(--pad);bottom:var(--pad);font-size:clamp(48px,9vw,120px);font-weight:100;line-height:.8;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
-.loader .cap{position:absolute;left:var(--pad);bottom:var(--pad)}
-.loader .cap,.loader .count{transition:opacity .4s}
 
 /* cursor */
 .cursor{position:fixed;left:0;top:0;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;z-index:300;transition:width .45s var(--ease),height .45s var(--ease),margin .45s var(--ease);will-change:transform}

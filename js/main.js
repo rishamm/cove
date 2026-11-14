@@ -29,7 +29,7 @@ const defs = document.createElementNS(NS, 'defs');
 defs.innerHTML = '<clipPath id="liq"><path id="liqPath"/></clipPath>';
 loaderLogo.svg.prepend(defs);
 loaderLogo.addGroup({ fill: '#fff', 'clip-path': 'url(#liq)' });
-const liqPath = $('#liqPath'), bgPath = $('#loaderBg'), countEl = $('#count');
+const liqPath = $('#liqPath'), bgPath = $('#loaderBg');
 const L = { p: 0, target: 0, t: 0, q: 0, ready: false, done: false, start: performance.now() };
 const TOP = W.VB[1] - 6, BOT = W.VB[1] + W.VB[3] + 6;
 
@@ -58,7 +58,6 @@ function loaderTick() {
   L.p += (L.target - L.p) * .08;
   if (L.target === 1 && L.p > .97) L.p = 1;
   liqPath.setAttribute('d', liquidLevel(L.p, L.t));
-  countEl.textContent = String(Math.round(L.p * 100)).padStart(3, '0');
   if (L.q > 0) bgPath.setAttribute('d', bgShape(L.q, L.t));
   if (L.p === 1 && L.ready && !L.exiting) exitLoader();
   requestAnimationFrame(loaderTick);
@@ -449,8 +448,7 @@ function exitLoader() {
   if (!HAS) { $('#loader').remove(); L.done = true; lenis && lenis.start(); return; }
   scrollFX();
   const tl = gsap.timeline({ onComplete: () => { L.done = true; $('#loader').remove(); W.all.splice(W.all.indexOf(loaderLogo), 1); lenis && lenis.start(); ScrollTrigger.refresh(); } });
-  tl.to('#loader .cap, #loader .count', { opacity: 0, duration: .4 }, 0)
-    .to(loaderLogo.o, { amp: 16, duration: 1, ease: 'power2.in' }, 0)
+  tl.to(loaderLogo.o, { amp: 16, duration: 1, ease: 'power2.in' }, 0)
     .to('#loaderLogo', { yPercent: -120, opacity: 0, duration: 1.1, ease: 'power3.in' }, .1)
     .to(L, { q: 1, duration: 1.5, ease: 'power3.inOut' }, .35);
   heroIntro(.75);
