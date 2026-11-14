@@ -63,8 +63,8 @@ $$('[data-rich]').forEach(el => el.innerHTML = rich(get(S, el.dataset.rich)));
 const navWave = new W($('#navLogo'), { amp: 1.6, speed: 1.4 });
 
 // hero — living collage
-const SLOTS_D = [[8,14,13,'3/4',.6],[27,6,9,'1/1',1.2],[43,20,15,'4/5',.35],[65,8,11,'3/4',.9],[82,30,12,'4/3',1.4],[69,60,14,'3/2',.7],[35,66,12,'4/3',1.1],[11,57,10,'4/5',.5]];
-const SLOTS_M = [[5,12,30],[62,9,26],[29,29,42],[73,43,23],[4,50,28],[46,63,34],[9,79,22],[70,77,25]];
+const SLOTS_D = [[5,6,12,'3/4',.6],[24,0,8.5,'1/1',1.2],[40,10,14,'4/5',.35],[63,0,10.5,'3/4',.9],[80,22,12,'4/3',1.4],[67,58,13,'3/2',.7],[33,66,11,'4/3',1.1],[8,56,9.5,'4/5',.5]];
+const SLOTS_M = [[0,2,30],[60,0,27],[27,20,42],[71,36,25],[0,45,29],[44,58,34],[6,76,23],[68,74,28]];
 const heroAll = P.filter(p => p.show_hero);
 const heroP = (heroAll.length ? heroAll : P).slice(0, 8);
 const collage = $('#collage');
@@ -384,8 +384,8 @@ if (HAS && mqDesk.matches && !RM) {
   const qs = phs.map(f => { const el = $('.in', f); return [gsap.quickTo(el, 'x', { duration: 1.4, ease: 'power3' }), gsap.quickTo(el, 'y', { duration: 1.4, ease: 'power3' }), +f.dataset.d]; });
   $('.hero').addEventListener('pointermove', e => {
     const nx = e.clientX / innerWidth - .5, ny = e.clientY / innerHeight - .5;
-    qs.forEach(([x, y, d]) => { x(-nx * d * 50); y(-ny * d * 50); });
-    ry(nx * 7); rx(-ny * 5);
+    qs.forEach(([x, y, d]) => { x(-nx * d * 30); y(-ny * d * 14); });
+    ry(nx * 6); rx(-ny * 3);
   });
   $('.hero').addEventListener('pointerleave', () => { rx(0); ry(0); qs.forEach(([x, y]) => { x(0); y(0); }); });
   phs.forEach(f => {

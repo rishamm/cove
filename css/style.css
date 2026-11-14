@@ -69,7 +69,7 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
 
 /* hero — living collage */
 .hero{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:#fff}
-.collage{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.collage{position:absolute;top:calc(var(--pad) * 2 + 40px);bottom:var(--pad);left:var(--pad);right:var(--pad);transform-style:preserve-3d;will-change:transform}
 .ph{position:absolute;left:var(--x);top:var(--y);width:var(--w);cursor:pointer;will-change:transform}
 .ph .in{position:relative;overflow:hidden;width:100%;height:100%;will-change:transform;background:#f1f1f1}
 .ph .in img{position:absolute;inset:0;transform:scale(1.12)}
@@ -152,7 +152,7 @@ section{position:relative}
 .lb.on{opacity:1;pointer-events:auto}
 .lb header,.lb footer{display:flex;justify-content:space-between;align-items:center;padding:var(--pad)}
 .lb .stage{position:relative;display:grid;place-items:center;padding:0 var(--pad);min-height:0}
-.lb .stage img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;transition:opacity .45s var(--ease),transform .8s var(--ease)}
+.lb .stage img{position:absolute;top:0;bottom:0;left:var(--pad);width:calc(100% - var(--pad) * 2);height:100%;object-fit:contain;transition:opacity .45s var(--ease),transform .8s var(--ease)}
 .lb .stage img.swap{opacity:0;transform:scale(.96)}
 .lb .navb{display:flex;gap:28px}
 .lb h4{font-weight:200;font-size:clamp(14px,1.7vw,23px);letter-spacing:-.02em}
