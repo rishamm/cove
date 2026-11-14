@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COVE — Photography</title>
+<meta name="description" content="COVE — photography studio. Portrait, editorial and still life in black and white.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100;200;300;400&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="locked">
+<div class="grain"></div>
+<div class="cursor"><span>View</span></div>
+<div class="copied">Copied</div>
+
+<!-- Liquid loader -->
+<div class="loader" id="loader">
+  <svg class="bg" viewBox="0 0 100 100" preserveAspectRatio="none"><path id="loaderBg" d="M0 0H100V100H0Z"/></svg>
+  <div class="lw" id="loaderLogo"></div>
+  <div class="cap label" data-c="brand.loaderCaption"></div>
+  <div class="count" id="count">000</div>
+</div>
+
+<header class="nav">
+  <a href="#top" class="logo" id="navLogo" data-go="#top" aria-label="Home"></a>
+  <nav class="links">
+    <a href="#work" data-go="#work">Work</a>
+    <a href="#archive" data-go="#archive">Archive</a>
+    <a href="#about" data-go="#about">About</a>
+    <a href="#contact" data-go="#contact">Contact</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu"><span id="menuLbl">Menu</span><i></i></button>
+  </nav>
+</header>
+
+<div class="menu" id="menu">
+  <ul>
+    <li><a href="#top" data-go="#top"><small>01</small><span class="wave-hover">Index</span></a></li>
+    <li><a href="#work" data-go="#work"><small>02</small><span class="wave-hover">Selected work</span></a></li>
+    <li><a href="#archive" data-go="#archive"><small>03</small><span class="wave-hover">Archive</span></a></li>
+    <li><a href="#about" data-go="#about"><small>04</small><span class="wave-hover">About</span></a></li>
+    <li><a href="#contact" data-go="#contact"><small>05</small><span class="wave-hover">Contact</span></a></li>
+  </ul>
+  <div class="foot label"><span data-c="contact.email"></span><span>Instagram — <span data-c="contact.instagram"></span></span><span data-c="footer.copyright"></span></div>
+</div>
+
+<main>
+<section class="hero" id="top">
+  <div class="collage" id="collage"></div>
+  <div class="mark" id="mark"></div>
+  <div class="top-meta label"><span data-c="hero.eyebrow"></span><span id="clock"></span></div>
+  <div class="meta">
+    <p data-c="hero.tagline"></p>
+    <div class="contact" id="heroContact"></div>
+    <div class="label" id="specialties" style="line-height:2"></div>
+    <div class="scroll-ind label">Scroll<i></i></div>
+  </div>
+</section>
+
+<section class="manifesto">
+  <aside class="label"><span>( 01 ) — <span data-c="manifesto.label"></span></span><span>Est. <span data-c="brand.established"></span></span></aside>
+  <p class="txt" id="manifesto"></p>
+</section>
+
+<section class="index" id="work">
+  <div class="sec-head"><h2 class="wave-title" data-rich="work.title"></h2><span class="label">( 02 ) — <span data-c="work.label"></span></span></div>
+  <ul class="rows" id="rows"></ul>
+</section>
+<div class="float" id="float"></div>
+
+<section class="latest" id="latest">
+  <div class="sec-head"><h2 class="wave-title" data-rich="latest.title"></h2><span class="label">( 03 ) — <span data-c="latest.label"></span></span></div>
+  <div class="track" id="track"></div>
+  <div class="progress"><i id="prog"></i></div>
+</section>
+
+<div class="marquee"><div class="mq-track" id="mq"></div></div>
+
+<section class="archive" id="archive">
+  <div class="sec-head"><h2 class="wave-title" data-rich="archive.title"></h2><div class="filters" id="filters"></div></div>
+  <div class="masonry" id="masonry"></div>
+</section>
+
+<section class="about" id="about">
+  <div class="portrait" data-cursor="Look"><img id="aboutImg" alt="Portrait"></div>
+  <div>
+    <span class="label">( 04 ) — <span data-c="about.label"></span></span>
+    <h2 data-rich="about.text"></h2>
+    <div class="cols">
+      <div><span class="label" style="color:var(--g)">Services</span><ul id="services"></ul></div>
+      <div><span class="label" style="color:var(--g)">Recognition</span><ul id="recognition"></ul></div>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+</section>
+</main>
+
+<footer class="contact-sec" id="contact">
+  <h2 class="big wave-title" data-rich="footer.title"></h2>
+  <div class="cgrid">
+    <div id="blocksA"></div>
+    <div><div id="blocksB"></div><div class="pills" id="socials"></div></div>
+    <div class="formcol">
+      <h5 style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:400" data-c="footer.formTitle"></h5>
+      <form id="form">
+        <label for="fn">Name</label><input id="fn" required autocomplete="name">
+        <label for="fe">Email</label><input id="fe" type="email" required autocomplete="email">
+        <label for="fm">Project</label><textarea id="fm" rows="3" required></textarea>
+        <button type="submit">Write to us <i></i></button>
+        <div class="formnote" id="formnote"></div>
+      </form>
+    </div>
+  </div>
+  <div class="foot-logo logo" id="footLogo"></div>
+  <div class="foot-bar label"><span data-c="footer.copyright"></span><a href="#top" data-go="#top">Back to top ↑</a></div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <header><span class="label" id="lbCount"></span><button class="label" id="lbClose">Close ✕</button></header>
+  <div class="stage"><img id="lbImg" alt=""><div class="zone l" data-cursor="Prev"></div><div class="zone r" data-cursor="Next"></div></div>
+  <footer><div><h4 id="lbT"></h4><span class="label" id="lbC" style="color:#8a8a8a"></span></div><div class="navb label"><button id="lbPrev">← Prev</button><button id="lbNext">Next →</button></div></footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/content.js"></script>
+<script src="js/data.js"></script>
+<script src="js/wave.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
